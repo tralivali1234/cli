@@ -12,7 +12,7 @@ namespace Microsoft.DotNet.Cli
         public static Command Publish() =>
             Create.Command(
                 "publish",
-                LocalizableStrings.AppFullName,
+                LocalizableStrings.AppDescription,
                 Accept.ZeroOrMoreArguments(),
                 CommonOptions.HelpOption(),
                 CommonOptions.FrameworkOption(),
@@ -26,11 +26,11 @@ namespace Microsoft.DotNet.Cli
                 CommonOptions.ConfigurationOption(),
                 CommonOptions.VersionSuffixOption(),
                 Create.Option(
-                    "--filter",
-                    LocalizableStrings.FilterProjOptionDescription,
+                    "--manifest",
+                    LocalizableStrings.ManifestOptionDescription,
                     Accept.OneOrMoreArguments()
-                        .With(name: LocalizableStrings.FilterProjOption)
-                        .ForwardAsSingle(o => $"/p:FilterProjectFiles={string.Join("%3B", o.Arguments)}")),
+                        .With(name: LocalizableStrings.ManifestOption)
+                        .ForwardAsSingle(o => $"/p:TargetManifestFiles={string.Join("%3B", o.Arguments)}")),
                 Create.Option(
                     "--self-contained",
                     LocalizableStrings.SelfContainedOptionDescription,

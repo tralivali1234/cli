@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using Microsoft.DotNet.Cli.CommandLine;
+using Microsoft.DotNet.Tools.Help;
 using static System.Environment;
 using static Microsoft.DotNet.Cli.CommandLine.LocalizableStrings;
 using LocalizableStrings = Microsoft.DotNet.Tools.Run.LocalizableStrings;
@@ -46,7 +47,8 @@ namespace Microsoft.DotNet.Cli
                                     RemoveCommandParser.Remove(),
                                     ListCommandParser.List(),
                                     NuGetCommandParser.NuGet(),
-                                    CacheCommandParser.Cache(),
+                                    StoreCommandParser.Store(),
+                                    HelpCommandParser.Help(),
                                     Create.Command("msbuild", ""),
                                     Create.Command("vstest", ""),
                                     CompleteCommandParser.Complete(),
