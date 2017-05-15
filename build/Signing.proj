@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project InitialTargets="SetSigningProperties" DefaultTargets="SignFiles" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-    <RepoRoot>$(MSBuildThisFileDirectory)/..</RepoRoot>
-  </PropertyGroup>
-  
-  <Import Project="$(RepoRoot)/build_tools/MicroBuild.Core.props" />
+  <Import Project="MicroBuild.props" />
+  <Import Project="$(MicroBuildPropsAndTargetsPath)MicroBuild.Core.props" />
 
   <!-- This will be overridden if we're building with MicroBuild. -->
   <Target Name="SignFiles">
@@ -18,6 +15,7 @@
       <OutputDirectory Condition="'$(OutputDirectory)' == ''">$(BaseOutputDirectory)/stage2</OutputDirectory>
       <CompilationDirectory Condition="'$(CompilationDirectory)' == ''">$(BaseOutputDirectory)/stage2compilation</CompilationDirectory>
       <PackagesDirectory Condition="'$(PackagesDirectory)' == ''">$(BaseOutputDirectory)/packages</PackagesDirectory>
+      <SdkResolverOutputDirectory>$(BaseOutputDirectory)/intermediate/MSBuildSdkResolver</SdkResolverOutputDirectory>
 
       <!-- The OutDir and IntermediateOutputPath properties are required by MicroBuild. MicroBuild only
            signs files that are under these paths. -->
@@ -71,6 +69,19 @@
     </ItemGroup>
   </Target>
 
+  <Target Name="SignSdkResolverContents" DependsOnTargets="GetSignSdkResolverContentsFiles;SignFiles" />
+
+  <Target Name="GetSignSdkResolverContentsFiles">
+    <PropertyGroup>
+      <OutDir>$(SdkResolverOutputDirectory)</OutDir>
+    </PropertyGroup>
+    <ItemGroup>
+      <FilesToSign Include="$(SdkResolverOutputDirectory)/Microsoft.DotNet.MSBuildSdkResolver.dll">
+        <Authenticode>$(InternalCertificateId)</Authenticode>
+      </FilesToSign>
+    </ItemGroup>
+  </Target>
+
   <Target Name="SignMsiAndCab" DependsOnTargets="GetSignMsiAndCabFiles;SignFiles" />
 
   <Target Name="GetSignMsiAndCabFiles">
@@ -113,5 +124,5 @@
     </ItemGroup>
   </Target>
 
-  <Import Project="$(RepoRoot)/build_tools/MicroBuild.Core.targets" />
+  <Import Project="$(MicroBuildPropsAndTargetsPath)MicroBuild.Core.targets" />
 </Project>
